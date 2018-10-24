@@ -8,20 +8,20 @@ CURSOR CUR_ALMACEN IS SELECT * FROM Almacen;
 BEGIN
 --Para recorrerlo o iterarlo usamos un ciclo For
 FOR FILA IN CUR_ALMACEN LOOP
-DBMS_OUTPUT.PUT_LINE('La ubicaci髇 del almac閚 es:'||FILA.UBICACION_ALMACEN);
+DBMS_OUTPUT.PUT_LINE('La ubicaci贸n del almac茅n es:'||FILA.UBICACION_ALMACEN);
 END LOOP;
 END;
 /
 
 /*
-Ejercicio 2: Generar un procedimiento que itere la tabla Almacen y que modifique nuestra ubicaci髇 conservando el nombre 
-de la ubicaci髇 pero agregando el Varchar,Ecaterror.
+Ejercicio 2: Generar un procedimiento que itere la tabla Almacen y que modifique nuestra ubicaci贸n conservando el nombre 
+de la ubicaci贸n pero agregando el Varchar,Ecaterror.
 */
 DECLARE
 CURSOR CUR_ALMACEN IS SELECT * FROM Almacen FOR UPDATE;
 BEGIN
 FOR FILA IN CUR_ALMACEN LOOP
-DBMS_OUTPUT.PUT_LINE('Ubicaci髇 actual:'||FILA.UBICACION_ALMACEN);
+DBMS_OUTPUT.PUT_LINE('Ubicaci贸n actual:'||FILA.UBICACION_ALMACEN);
 UPDATE Almacen SET UBICACION_ALMACEN=FILA.UBICACION_ALMACEN||', ECATERROR' WHERE CURRENT OF CUR_ALMACEN;
 END LOOP;
 END;
@@ -31,14 +31,14 @@ SELECT * FROM Almacen;
 
 /*
 Ejercicio 3: Efectuar un bloque PL SQL para cambiar el nombre a Nezayork a los registros
-menores a indice o n鷐ero de almac閚 2
+menores a indice o n煤mero de almac茅n 2
 */
 DECLARE
 CURSOR CUR_ALMACEN IS SELECT * FROM Almacen FOR UPDATE;
 BEGIN
 FOR FILA IN CUR_ALMACEN LOOP
-DBMS_OUTPUT.PUT_LINE('Ubicaci髇 actual:'||FILA.UBICACION_ALMACEN);
---Checaos el n鷐ero del Almac閚
+DBMS_OUTPUT.PUT_LINE('Ubicaci贸n actual:'||FILA.UBICACION_ALMACEN);
+--Checaos el n煤mero del Almac茅n
 IF FILA.NUMERO_ALMACEN <=2 THEN
   UPDATE Almacen SET UBICACION_ALMACEN='NezaYork' WHERE CURRENT OF CUR_ALMACEN;
 END IF;
@@ -54,18 +54,16 @@ que compraron en NezaYork
 almacen y cliente
 */
 DECLARE
-CURSOR CUR_ALMACEN IS SELECT * FROM Almacen;
-CURSOR CUR_CLIENTE IS SELECT * FROM Cliente;
+CURSOR CURSOR_ALMACEN IS SELECT * FROM Almacen;
+CURSOR CURSOR_CLIENTE IS SELECT * FROM Cliente;
 BEGIN
-FOR FILA1 IN CUR_ALMACEN LOOP
-DBMS_OUTPUT.PUT_LINE('Ubicaci髇 actual:'||FILA.UBICACION_ALMACEN);
-FOR FILA2 IN CUR_CLIENTE LOOP
-DBMS_OUTPUT.PUT_LINE('Ubicaci髇 actual:'||FILA.UBICACION_ALMACEN);
---Checaos el n鷐ero del Almac閚
-IF FILA1.NUMERO_ALMACEN='NezaYork' AND FILA2.NUMERO_ALMACEN=FILA1.NUMERO_ALMACEN THEN
-  DBMS_OUTPUT.PUT_LINE('La ubicaci髇 del almac閚 es:'||FILA.UBICACION_ALMACEN);
+FOR FILA1 IN CURSOR_ALMACEN LOOP
+--DBMS_OUTPUT.PUT_LINE('Ubicaci贸n actual: '||FILA.UBICACION_ALMACEN);
+FOR FILA2 IN CURSOR_CLIENTE LOOP
+IF FILA1.NUMERO_ALMACEN=FILA2.NUMERO_ALMACEN AND FILA1.UBICACION_ALMACEN='Nezayork' THEN
+DBMS_OUTPUT.PUT_LINE('Ubicaci贸n actual: '||FILA.UBICACION_ALMACEN||' \nCliente:'||FILA2.NOMBRE_CLIENTE);
 END IF;
+END LOOP;
 END LOOP;
 END;
 /
-
